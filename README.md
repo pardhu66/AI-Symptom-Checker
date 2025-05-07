@@ -81,6 +81,7 @@ Built with real patient data, it supports intelligent symptom interpretation (in
 5. **Prediction**: Top 5 diseases with confidence levels
 6. **Remedy Matching**: Maps remedies, precautions, and overview using fuzzy logic
 7. **Output**: Displayed interactively on the web app
+![ChatGPT Image May 6, 2025, 08_57_44 PM](https://github.com/user-attachments/assets/53e3476b-6c76-45b4-90b2-b25f9f353d6a)
 
 ---
 
