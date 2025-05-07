@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI-Based Symptom Tracker and Herbal Remedy Recommendation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('https://img.freepik.com/free-photo/stethoscope-medical-equipment_23-2149270304.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', sans-serif;
+            backdrop-filter: blur(5px);
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .badge {
+            font-size: 0.9rem;
+            margin-right: 6px;
+        }
+        .disease-card {
+            border-left: 5px solid #0d6efd;
+            background-color: #f8f9fa;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .highlight {
+            background-color: #e8f0fe;
+            border-left: 5px solid #0d6efd;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="text-center mb-4">AI-Based Symptom Tracker and Herbal Remedy Recommendation</h2>
+    <div class="mb-3">
+        <label for="symptomInput" class="form-label">Describe your symptoms:</label>
+        <input type="text" class="form-control" id="symptomInput" placeholder="e.g. fever and stomach pain">
+        <button id="matchBtn" class="btn btn-primary mt-2">Match Symptoms</button>
+    </div>
+    <div id="matchedSymptoms" class="mb-3" style="display:none;"></div>
+    <div class="mb-3">
+        <button id="predictBtn" class="btn btn-success" style="display:none;">Predict Diseases</button>
+    </div>
+    <div id="diseaseResults"></div>
+    <div id="diseaseDetails"></div>
+</div>
+
+<script>
+    const symptomInput = document.getElementById('symptomInput');
+    const matchBtn = document.getElementById('matchBtn');
+    const matchedSymptoms = document.getElementById('matchedSymptoms');
+    const predictBtn = document.getElementById('predictBtn');
+    const diseaseResults = document.getElementById('diseaseResults');
+    const diseaseDetails = document.getElementById('diseaseDetails');
+    let selectedSymptoms = [];
+
+    matchBtn.onclick = async () => {
+        const input = symptomInput.value.trim();
+        if (!input) return;
+        const response = await fetch('/get_symptoms', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({input})
+        });
+        const symptoms = await response.json();
+        matchedSymptoms.innerHTML = `<h5>Select Symptoms:</h5>`;
+        symptoms.forEach((s, idx) => {
+            matchedSymptoms.innerHTML += `
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="${s}" id="symptom${idx}">
+                    <label class="form-check-label" for="symptom${idx}">${s}</label>
+                </div>`;
+        });
+        matchedSymptoms.style.display = 'block';
+        predictBtn.style.display = 'inline-block';
+    };
+
+    predictBtn.onclick = async () => {
+        const checkboxes = matchedSymptoms.querySelectorAll('input[type=checkbox]');
+        selectedSymptoms = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+        if (!selectedSymptoms.length) return;
+        const response = await fetch('/predict', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({selectedSymptoms})
+        });
+        const diseases = await response.json();
+        diseaseResults.innerHTML = '<h4>Predicted Diseases:</h4>';
+        diseases.forEach(d => {
+            diseaseResults.innerHTML += `
+                <div class="disease-card" onclick="getDetails('${d.disease}')">
+                    <h5>${d.disease}</h5>
+                    <p><strong>Confidence:</strong> ${d.probability}</p>
+                    <small><em>Click to see remedy and overview</em></small>
+                </div>`;
+        });
+    };
+
+    async function getDetails(disease) {
+        const response = await fetch('/details', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({disease})
+        });
+        const info = await response.json();
+        diseaseDetails.innerHTML = `
+            <div class="highlight">
+                <h4>${disease}</h4>
+                <p><strong>Overview:</strong> ${info.overview}</p>
+                <p><strong>Herbal Remedy:</strong> ${info.remedy}</p>
+                <p><strong>Precaution:</strong> ${info.precaution}</p>
+            </div>`;
+        diseaseDetails.scrollIntoView({behavior: 'smooth'});
+    }
+</script>
+</body>
+</html>
