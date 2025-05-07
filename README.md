@@ -87,7 +87,7 @@ Built with real patient data, it supports intelligent symptom interpretation (in
 
 ## 🤖 Model Details
 
-* **Vectorizer**: TF-IDF (unigrams)
+* **Vectorizer**: TF-IDF 
 * **Classifier**: XGBoost (n\_estimators=80, max\_depth=7)
 * **Semantic Engine**: SentenceTransformer ('all-MiniLM-L6-v2')
 * **Fuzzy Match**: `difflib.get_close_matches()`
