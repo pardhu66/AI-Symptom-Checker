@@ -98,7 +98,7 @@ Built with real patient data, it supports intelligent symptom interpretation (in
 
 ```bash
 # Clone repository
-$ git clone https://github.com/yourusername/symptom-tracker.git
+$ git clone https://github.com/pardhu66/AI-Symptom-Checker.git
 $ cd symptom-tracker
 
 # Create virtual environment
@@ -112,17 +112,7 @@ $ pip install -r requirements.txt
 $ python app.py
 ```
 
-Ensure your folder structure:
 
-```
-symptom-tracker/
-├── app.py
-├── templates/
-│   └── index.html
-├── final_dataset2.csv
-├── remedy_dataset.csv
-├── disease_overviews_final.csv
-```
 
 ---
 
@@ -146,7 +136,6 @@ symptom-tracker/
 * Disease Prediction with Confidence
 * Herbal Remedy + Overview Panel
 
-(Attach screenshots if needed)
 
 ---
 
