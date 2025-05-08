@@ -1,101 +1,116 @@
 # 🌿 AI-Based Symptom Tracker and Herbal Remedy Recommendation
 
 ## 📌 Project Overview
+AI-Based Symptom Tracker and Herbal Remedy Recommendation is a personalized healthcare assistant that predicts probable diseases from free-text symptom descriptions and suggests natural herbal remedies with safety precautions. It leverages a powerful combination of **machine learning**, **semantic search (SBERT)**, and **web-based interactivity** to support users in self-screening without requiring deep medical knowledge.
 
-AI-Based Symptom Tracker and Herbal Remedy Recommendation is an intelligent web-based healthcare assistant that predicts probable diseases from free-text symptom input and offers natural, side-effect-free herbal remedies and preventive advice. This system uses NLP, machine learning (XGBoost), and Sentence-BERT (SBERT) embeddings to process and understand user inputs and provide actionable, explainable insights.
-
-Built with real patient data, it supports intelligent symptom interpretation (including spelling mistakes and synonyms), disease classification, and herbal remedy mapping — empowering users to self-screen responsibly and naturally.
+Unlike static rule-based systems, this platform interprets *natural language inputs*, corrects spelling errors, and returns interpretable predictions with high accuracy. Herbal remedies and educational disease overviews help users take the first informed step toward recovery.
 
 ---
 
 ## 📋 Table of Contents
-
-* Features
-* Datasets Used
-* System Architecture
-* Model Details
-* Installation Guide
-* Usage Instructions
-* Screenshots
-* Future Scope
-* Limitations
-* Contributors
-* License
+- Features
+- Previous Works in the Field
+- Datasets Used
+- System Architecture
+- Model Details
+- Installation Guide
+- Usage Instructions
+- Screenshots
+- Future Scope
+- Limitations
+- Contributors
+- License
+- Acknowledgements
 
 ---
 
 ## ✅ Features
-
 ### 🧠 SBERT-Based Symptom Matching
-
-* Understands symptom descriptions even in natural, informal language
-* Matches to top 10 dataset symptoms using semantic embeddings and fuzzy matching
-* Accepts spelling mistakes (e.g., "fevar" → "fever")
+- Understands colloquial, informal, or noisy symptom inputs
+- Handles spelling errors (e.g., "fevar" → "fever")
+- Uses Sentence-BERT + fuzzy logic to match top-10 symptoms from dataset
 
 ### 🔍 Disease Prediction with XGBoost
+- Predicts **Top 5 diseases** ranked by probability
+- Learns symptom combinations and underlying patterns (not just matching)
 
-* Predicts top 5 likely diseases based on selected symptoms
-* Confidence scores shown for interpretability
-
-### 🌱 Herbal Remedies + Precaution Mapping
-
-* Displays matched remedies and precautions for each predicted disease
-* Integrates fuzzy disease name matching with a curated herbal dataset
+### 🌱 Herbal Remedies & Precautions
+- Maps herbal treatment and safety advice from a curated dataset
+- Matches diseases using fuzzy score-based matching to improve accuracy
 
 ### 📚 Disease Overview Integration
+- Adds human-readable explanations for each predicted disease
+- Helps educate users, reducing fear or confusion about conditions
 
-* Pulls disease summaries from a separate overview file for medical context
-* Helps users understand what the condition means
+### 💻 Interactive Web UI
+- Dark-mode responsive web design
+- Highlights symptom suggestions with toggles
+- Interactive cards for disease results and expandable remedy sections
 
-### 💻 Interactive Web Interface
+---
 
-* Symptom input field and smart suggestion system
-* Dynamic UI to click disease and reveal remedy, overview, and precautions
-* Styled with a medical background for professional look
+## 🔍 Previous Works in the Field
+Previous symptom-disease prediction systems have typically relied on either:
+- **Rule-based matching** (e.g., keyword maps)
+- **Simple classifiers without contextual understanding**
+- **Black-box systems without interpretability**
+
+Examples include:
+- **MySymptoms** app – uses fixed logic, no ML, no synonym/spelling support
+- **WebMD Symptom Checker** – guided form inputs, lacks free-text understanding
+- **Early research** (e.g., Naive Bayes, Decision Tree on UCI datasets) – accuracy limited, cannot process natural language
+
+**What makes our system better?**
+✅ Accepts free-text symptom input (like a real conversation)
+✅ Handles synonyms and spelling mistakes using SBERT + fuzzy logic
+✅ Interpretable ML with confidence scores (XGBoost)
+✅ Adds herbal remedies, overview, and precautions — a holistic layer not seen in most existing works
 
 ---
 
 ## 📊 Dataset Summary
-
 ### 1. `final_dataset2.csv`
-
-* 13,000+ rows
-* 408 unique symptoms, 133 diseases
+- 13,000+ rows
+- 408 unique symptoms
+- 133 distinct diseases
 
 ### 2. `remedy_dataset.csv`
-
-* Herbal remedy and precaution mapping for each disease
+- Maps diseases to herbal treatments and related precautions
 
 ### 3. `disease_overviews_final.csv`
-
-* High-level disease summaries used for educational explanations
+- Medical overviews for each disease to support education
 
 ---
 
 ## 🧱 System Architecture
-
-1. **User Input**: Free-text symptom description
-2. **SBERT + Fuzzy Matcher**: Suggest top 10 relevant symptoms
-3. **Symptom Selection**: User picks from matches
-4. **Model**: XGBoost classifier using TF-IDF vectors of selected symptoms
-5. **Prediction**: Top 5 diseases with confidence levels
-6. **Remedy Matching**: Maps remedies, precautions, and overview using fuzzy logic
-7. **Output**: Displayed interactively on the web app
-![ChatGPT Image May 6, 2025, 08_57_44 PM](https://github.com/user-attachments/assets/53e3476b-6c76-45b4-90b2-b25f9f353d6a)
+```
+User Input (Free Text)
+      ↓
+Symptom Matching Engine (SBERT + Fuzzy Matcher)
+      ↓
+Symptom Selector (User selects from Top-10)
+      ↓
+Model (TF-IDF + XGBoost)
+      ↓
+Top-5 Disease Predictions
+      ↓
+Herbal Remedy Matcher + Disease Overview Fetch
+      ↓
+Interactive Display on Web Interface
+```
 
 ---
 
 ## 🤖 Model Details
-
-* **Vectorizer**: TF-IDF 
-* **Classifier**: XGBoost (n\_estimators=80, max\_depth=7)
-* **Semantic Engine**: SentenceTransformer ('all-MiniLM-L6-v2')
-* **Fuzzy Match**: `difflib.get_close_matches()`
+- **Vectorization**: TF-IDF (Top 800 unigrams)
+- **Classifier**: XGBoost
+  - `n_estimators=80`, `max_depth=7`, `learning_rate=0.2`
+- **Semantic Matcher**: `SentenceTransformer('all-MiniLM-L6-v2')`
+- **Spelling/Similarity Handling**: `difflib.get_close_matches()`
 
 ---
 
 ## ⚙️ Installation Guide
-
 ```bash
 # Clone repository
 $ git clone https://github.com/pardhu66/AI-Symptom-Checker.git
@@ -108,75 +123,62 @@ $ source venv/bin/activate  # or venv\Scripts\activate on Windows
 # Install dependencies
 $ pip install -r requirements.txt
 
-# Run Flask app
+# Run the application
 $ python app.py
 ```
 
-
-
 ---
 
-## 🧪 Usage
-
-1. Enter your symptoms in a natural sentence (e.g., "My head hurts and I feel feverish")
-2. Select the best-matched symptoms
-3. Click “Predict Diseases”
-4. View the top 5 diseases
-5. Click any disease to view:
-
-   * 🔍 Overview
-   * 🌿 Herbal Remedy
-   * ⚠️ Precaution
+## 🧪 Usage Instructions
+1. Enter symptoms as a sentence (e.g., “I have chills and sore throat”)
+2. Select matched symptoms from intelligent suggestions
+3. Click “Predict Diseases” to view top 5 predicted conditions
+4. Click a disease to reveal:
+   - 📘 Overview
+   - 🌿 Herbal Remedy
+   - ⚠️ Safety Precaution
 
 ---
 
 ## 🖼️ Screenshots
-
-* Smart Symptom Matching Interface
-* Disease Prediction with Confidence
-* Herbal Remedy + Overview Panel
-
+- ✅ Smart Symptom Matcher Interface
+- ✅ Top 5 Disease Predictor
+- ✅ Remedy + Precaution + Overview Panels
 
 ---
 
 ## 🚀 Future Scope
-
-* Add multilingual symptom inputs
-* Integrate real-time medical API (e.g., MedlinePlus)
-* Patient demographics for personalized results
-* Integrate advanced LLMs for context-aware explanations
-* Export/share results securely
-* Deploy to Hugging Face or Streamlit Cloud
+- 🌍 Add multilingual symptom processing (e.g., Spanish, Hindi)
+- 🤝 Integrate real-time medical APIs (e.g., MedlinePlus, WHO)
+- 📱 Add mobile-first interface & voice input for accessibility
+- 🔬 Integrate user demographics (age, gender, history) for personalization
+- 🧠 Integrate LLMs (GPT-style) to enhance interpretability
+- 🗃️ Secure cloud storage of inputs and result history
 
 ---
 
 ## 🚧 Limitations
-
-* No patient history or age/gender input
-* Accuracy may vary with ambiguous phrasing
-* Herbal remedies are general, not personalized
-* Does not replace professional medical advice
+- ❌ No personal history (age/gender/duration not factored)
+- ❌ Herbal remedies are general, not patient-specific
+- ❌ Cannot currently disambiguate identical symptom overlaps in rare diseases
+- ❌ Not designed to replace professional medical advice
+- ❌ Model accuracy can degrade on edge-case inputs or vague terms
 
 ---
 
-## 👨‍💻 Contributors
-
-Pardha Saradhi Reddy Golamaru
+## 👨‍💻 Contributor
+**Pardha Saradhi Reddy Golamaru**
 
 ---
 
 ## 📄 License
-
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
 ## 🙏 Acknowledgements
-
-* UCI symptom-disease dataset
-* SentenceTransformers
-* XGBoost team
-* Ayurvedic and Home Remedy community databases
-* Flask and Bootstrap UI libraries
-
-> 💡 **Pro Tip:** If you found this project useful, star it ⭐ on GitHub and share your feedback!
+- UCI Machine Learning Repository
+- Sentence-BERT & Hugging Face
+- Open-source herbal remedy datasets
+- XGBoost & scikit-learn
+- Bootstrap 5 and Flask web framework
