@@ -58,7 +58,7 @@ Previous symptom-disease prediction systems have typically relied on either:
 Examples include:
 - **MySymptoms** app – uses fixed logic, no ML, no synonym/spelling support
 - **WebMD Symptom Checker** – guided form inputs, lacks free-text understanding
-- **Early research** (e.g., Naive Bayes, Decision Tree on UCI datasets) – accuracy limited, cannot process natural language
+- **Early research** – accuracy limited, cannot process natural language
 
 **What makes our system better?**
 ✅ Accepts free-text symptom input (like a real conversation)
@@ -98,11 +98,12 @@ Herbal Remedy Matcher + Disease Overview Fetch
       ↓
 Interactive Display on Web Interface
 ```
+![ChatGPT Image May 6, 2025, 08_57_44 PM](https://github.com/user-attachments/assets/9357c92c-5251-442f-9bda-66942c727027)
 
 ---
 
 ## 🤖 Model Details
-- **Vectorization**: TF-IDF (Top 800 unigrams)
+- **Vectorization**: TF-IDF 
 - **Classifier**: XGBoost
   - `n_estimators=80`, `max_depth=7`, `learning_rate=0.2`
 - **Semantic Matcher**: `SentenceTransformer('all-MiniLM-L6-v2')`
